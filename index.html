@@ -2,8 +2,8 @@
 <html lang="es">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Redirección</title>
   <style>
     body {
@@ -20,80 +20,24 @@
       font-size: 2em;
       color: #f00;
     }
-
-    .btn {
-      display: inline-block;
-      padding: 10px 16px;
-      background: #0a7;
-      color: #fff;
-      text-decoration: none;
-      border-radius: 6px;
-    }
   </style>
 </head>
 
 <body>
   <h1>Redirigiendo en <span id="counter">10</span> segundos...</h1>
-  <p>Si no se abre automáticamente, toca el siguiente botón:</p>
-  <p><a id="openAppBtn" class="btn" href="#">Abrir en la app</a></p>
-
   <script>
-    // URL universal (dominio asociado a la app)
-    const universalUrl = "https://ferreteriaprincipal.com/cashea-return?idNumber=123"; // Cambia según sea necesario
+    // Variable para la URL de redirección
+    var redirectUrl = "ferreprincipalmobiledevelopment://cashea-return?idNumber=123"; // Cambia esta URL según sea necesario
 
-    // Esquema personalizado (debes configurarlo en Expo: app.json -> "scheme")
-    const appSchemeUrl = "ferreprincipalmobiledevelopment://cashea-return?idNumber=123"; // Ajusta el esquema
+    var counter = 10;
+    var counterElement = document.getElementById('counter');
 
-    // Intent para Android con fallback al Universal Link (ajusta el package)
-    const androidPackage = "com.ferreprincipal"; // Ajusta al package real de Android
-    const androidIntentUrl =
-      `intent://ferreprincipalmobiledevelopment.com/cashea-return?idNumber=123#Intent;` +
-      `scheme=https;package=${androidPackage};` +
-      `S.browser_fallback_url=${encodeURIComponent(universalUrl)};end`;
-
-    // Detección simple de plataforma
-    const ua = navigator.userAgent || "";
-    const isAndroid = /Android/i.test(ua);
-    const isIOS = /iPhone|iPad|iPod/i.test(ua);
-
-    // Contador visible
-    let counter = 10;
-    const counterElement = document.getElementById("counter");
-
-    // Acción para abrir la app (preferir gesto del usuario)
-    const openApp = () => {
-      // iOS: intenta esquema (requiere gesto), luego Universal Link como respaldo
-      if (isIOS) {
-        try { window.location.href = appSchemeUrl; } catch (_) { }
-        // Si el esquema no abre, tras ~1.5s usa el universal link
-        setTimeout(() => { window.location.href = universalUrl; }, 1500);
-        return;
-      }
-
-      // Android: usa intent:// con fallback
-      if (isAndroid) {
-        window.location.href = androidIntentUrl;
-        return;
-      }
-
-      // Otros: usa la URL universal
-      window.location.href = universalUrl;
-    };
-
-    // Enlace del botón y comportamiento por clic (gesto del usuario)
-    const openAppBtn = document.getElementById("openAppBtn");
-    openAppBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      openApp();
-    });
-
-    // Intento automático tras el contador (no es 100% fiable en todos los navegadores)
-    const interval = setInterval(() => {
+    var interval = setInterval(function () {
       counter--;
       counterElement.textContent = counter;
       if (counter <= 0) {
         clearInterval(interval);
-        openApp();
+        window.location.href = redirectUrl;
       }
     }, 1000);
   </script>
