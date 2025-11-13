@@ -1,85 +1,45 @@
+<!DOCTYPE html>
 <html lang="es">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-  <title>Cashea Checkout</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redirección</title>
   <style>
     body {
-      font-family: sans-serif;
-      margin: 0;
-      padding: 16px;
-    }
-
-    #checkout-container {
-      display: flex;
-      align-items: center;
-      justify-content:
-        center;
-      height: 100vh;
-    }
-
-    .hint {
+      font-family: Arial, sans-serif;
       text-align: center;
-      color: #666;
-      margin-top: 12px;
+      margin-top: 50px;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    #counter {
+      font-size: 2em;
+      color: #f00;
     }
   </style>
 </head>
 
 <body>
-  <div id="checkout-container"></div>
-  <div class="hint">Si el checkout no se abre automáticamente, toca el botón.</div>
-
-  <script src="https://unpkg.com/cashea-web-checkout-sdk@latest/dist/webcheckout-sdk.min.js"></script>
+  <h1>Redirigiendo en <span id="counter">10</span> segundos...</h1>
   <script>
-    const payload = {
-      identificationNumber: '123456789',
-      externalClientId: '1097',
-      deliveryMethod: 'IN_STORE',
-      merchantName: 'Web Pruebas Botón Cashea',
-      redirectUrl: 'https://mi-sitio.com/retorno',
-      deliveryPrice: 0,
-      invoiceId: 'inv-001',
+    // Variable para la URL de redirección
+    var redirectUrl = "https://ferreteriaprincipal.com/cashea-return?idNumber=123"; // Cambia esta URL según sea necesario
 
-      orders: [
-        {
-          store: {
-            id: 12467,
-            name: 'Web Pruebas Botón Cashea',
-            enabled: true,
-          },
-          products: [
-            {
-              id: 'prod-001',
-              name: 'Producto A',
-              sku: 'SKU-123',
-              description: 'Descripción del producto',
-              imageUrl: 'https://via.placeholder.com/150',
-              quantity: 2,
-              price: 50,
-              tax: 0,
-              discount: 0,
-            },
-          ],
-        },
-      ],
-    };
+    var counter = 10;
+    var counterElement = document.getElementById('counter');
 
-    const sdk = new WebCheckoutSDK({
-      apiKey:
-        `6639416be49c36e98d5876d4fc29cdc4bee4d7490516bcd5c4589c07379c3136`
-    });
-
-    // Crea el botón en el contenedor
-    sdk.createCheckoutButton({
-      payload,
-      container: document.getElementById('checkout-container')
-    });
-
-
-
-
+    var interval = setInterval(function () {
+      counter--;
+      counterElement.textContent = counter;
+      if (counter <= 0) {
+        clearInterval(interval);
+        window.location.href = redirectUrl;
+      }
+    }, 1000);
   </script>
 </body>
 
